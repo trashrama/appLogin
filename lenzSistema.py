@@ -1,10 +1,10 @@
 import hashlib
 import json
 import re
-dic_json = []
 
 # aprender a mexer em regex
 
+id_cont = 0
 
 def validarEmail(email):
     return re.match(r'[\w\.+-]+@([\w-]+\.)', email)
@@ -18,22 +18,33 @@ def validarNome(nome):
     return re.match(r'^[a-zA-Z\s]{2,}(?: [a-zA-Z\s]+)*$', nome)
 
 
-# def gravarDados(login, hash):
-#     f = open("sdvvzrugv.txt", 'a+')
-#     f.seek(0)
-#     linhas = f.readlines()
-#     if len(linhas) != 0:
-#         for item in linhas:
-#             conj = item.replace("\n", "").split(":")
-#             login_arq = conj[0]
-#             if (login_arq == login):
-#                 print("Já existe um usuário registrado")
-#             else:
-#                 f.writelines(f"{login}:{hash}\n")
-#     else:
-#         f.writelines(f"{login}:{hash}\n")
-#     print("Usuário criado com sucesso!")
-#     f.close()
+def gravarDados(id, nome, email, login, senha):
+    dic = {
+            'id':id,
+            'nome_completo':nome,
+            'email':email,
+            'login':login,
+            'senha':senha
+        }
+    
+    #try:
+    with open("dados.json",'r', encoding='utf-8') as arquivo:
+        dados = json.load(arquivo)
+        final = dados[-1]
+        id_cont = final['id']
+        print(id_cont)
+                
+        #não há elementos no arquivo json.
+    #except json.decoder.JSONDecodeError:
+        dados = []
+    
+    dados.append(dic)
+    with open("dados.json",'w', encoding='utf-8') as arquivo:
+        json.dump(dados, arquivo, ensure_ascii=False)
+
+
+
+
 
 
 # def verificarLogin(login, hash):
@@ -60,6 +71,8 @@ def validarNome(nome):
 #     f.close()
 
 op = 0
+
+
 
 while (op != 3):
 
@@ -88,7 +101,7 @@ while (op != 3):
                 email = input("Digite seu email: ")
             hash_senha = hashlib.sha512(
                 str(input("Digite sua senha: ")).encode("UTF-8")).hexdigest()
-            # gravarDados(login.upper(), hash_senha)
+            gravarDados(id=id_cont+1, nome=nome.upper(), email=email.casefold(), login=login.upper(), senha=hash_senha)
 
         elif (op == 2):
             login = input("Digite seu login: ")
