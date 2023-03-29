@@ -5,7 +5,6 @@ path = input("Escreva o caminho de seu arquivo '.c': ")
 
 while (os.path.exists(path) == False or not os.path.splitext(path)[1] == '.c'):
     if (os.path.exists(path+".c")):
-        print("oi")
         path = f'{path}.c'
         break
     print("Caminho inválido!")
