@@ -11,11 +11,13 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
     resizable: false,
+    autoHideMenuBar: true
+
   });
 
   setTimeout(() => {
     mainWindow.loadURL("http://localhost:5000/");
-  }, 5000);
+  }, 2000);
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

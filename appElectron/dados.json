@@ -26,5 +26,19 @@
         "email": "calar@gmail.com",
         "login": "SEEK",
         "senha": "3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2"
+    },
+    {
+        "id": 5,
+        "nome_completo": "FRANCISCO LUCAS",
+        "email": "lucas@gmail.com",
+        "login": "KKK@GMAIL.COM",
+        "senha": "3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2"
+    },
+    {
+        "id": 6,
+        "nome_completo": "JOAO",
+        "email": "joao@abc.com",
+        "login": "JOAO",
+        "senha": "116d8a0c052501644e231980e53e568d57d524fc981ac3a6acc649c51d0c53137a060c27df16d08aa40b43581c9cbb1ce2ec9db0e5984404d82758e1106dbe30"
     }
 ]

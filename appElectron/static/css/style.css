@@ -64,6 +64,7 @@
         margin: 0, 0, 0, 0;
         mix-blend-mode: luminosity;
         margin: auto;
+        pointer-events: none;
     }
     
     .botao {
