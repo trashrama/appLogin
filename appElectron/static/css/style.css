@@ -281,4 +281,34 @@ input:focus {
     max-width: 200px;
 }
 
+.erro{
+    max-width: 10%;
+    font-size: 40px;
+    position: absolute;
+    top: 20%;
+    left: 3%;
+}
+.author{
+    position: absolute;
+    top:42%;
+    left: 3%;
+}
+footer{
+    color:#ab53fd;
+    position: absolute;
+    font-weight: bolder;
+    top: 70%;
+    left: 28%;
+    margin: auto;
+
+}
+footer a{
+    color: #ab53fd;
+    text-decoration: none;
+
+}
+
+footer span{
+    color:#ffffff;
+}
 }

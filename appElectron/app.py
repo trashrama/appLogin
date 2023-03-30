@@ -109,6 +109,10 @@ id_cont, lista_dados, temDados = verificarDados()
 def index():
     return render_template('index.html')
 
+@app.route("/erro",)
+def erro():
+        return render_template('erro.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -123,7 +127,7 @@ def login():
         if (verificarLogin(temDados, login.upper(), hash_senha)):
             return render_template("./deucerto.html")
         else:
-            return jsonify({'mensagem': 'Login inválido! Verifique seu e-mail e senha.'}), 400
+            return render_template('./erro.html')
     return render_template('./login.html')
 
 
@@ -135,16 +139,17 @@ def register():
 
         email = request.form['email']
         login = request.form['login']
+        if (request.form['conf-password'] == senha):
+            if temDados:
+                if (verificarDuplicado('email', email)) or (verificarDuplicado('login', login)):
+                    return render_template('./erro.html')
 
-        print(nome, senha, email, login)
-        if temDados:
-            if (verificarDuplicado('email', email)) or (verificarDuplicado('login', login)):
-                return jsonify({'mensagem': 'Duplicado! Possivelmente seu usuário já foi cadastrado.'}), 100
-
-        hash_senha = hashlib.sha512(senha.encode("UTF-8")).hexdigest()
-        gravarDados(id=id_cont+1, nome=nome.upper(),
-                    email=email.casefold(), login=login.upper(), senha=hash_senha, lista_dados=lista_dados)
-        return redirect("/login")
+            hash_senha = hashlib.sha512(senha.encode("UTF-8")).hexdigest()
+            gravarDados(id=id_cont+1, nome=nome.upper(),
+                        email=email.casefold(), login=login.upper(), senha=hash_senha, lista_dados=lista_dados)
+            return redirect("/login")
+        else:
+            return redirect("/erro")
 
     return render_template('./register.html')
 
