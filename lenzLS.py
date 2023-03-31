@@ -1,7 +1,10 @@
 import os
 import getpass
 import socket
+from colorama import Fore, Style, init
 from datetime import datetime
+
+init()
 
 
 def pegaData(tupla):
@@ -36,23 +39,33 @@ def ls(item, tam, param):  # item[0] nome, item[1] tamanho...
         if ('l' in param or 'd' in param):
             end = ""
 
-    print("{:<{}}".format(item[0], tam), end=end)
+    print("{}{}{:<{}}{}".format(Style.BRIGHT,
+          Fore.LIGHTBLUE_EX, item[0], tam, Style.RESET_ALL), end=end)
 
     if (param):  # se tem itens na minha lista de parametros..
         if ('l' in param):     # vou tentar replicar um ls -l
-            l(item, param)
+            l(item, tam, param)
 
 
-def l(item, param):
+def l(item, tam_str, param):
     perm = item[-1]
     dt = item[2]
     tamanho = item[1]
-    if ('b' in param):  # divide pra ficar kb e um tamanho mais legivel
-        tamanho = int(tamanho / 1024)
-    print(" | {:08d}".format(tamanho), end="")
-    print(" | {:02d}/{:02d}/{} | {:02d}:{:02d}".format(dt.day,
-          dt.month, dt.year, dt.hour, dt.second), end="")
-    print(f" | {perm}", end="")
+    padrao_tam = 'by'  # bytes
+
+    # o parametro b é exclusivo pra um ls -l.. se vc usar fora até funciona professor mas só altera algo mesmo quando usado com ls -l.
+    if ('b' in param):  # divide pra ficar mb e um tamanho mais legivel
+
+        tamanho = tamanho / (1024*1024)
+        padrao_tam = 'mb'  # megabytes
+        # não é o ideal eu sei (realizar uma troca de tipo em uma variável que antes era int e estou formatando pra ser str), mas é só pra facilitar o processo xD
+    tamanho = "{:.2f}".format(tamanho)
+
+    print(" |{}{:^{}}{} ".format(Fore.LIGHTGREEN_EX,
+                                 (tamanho+" "+padrao_tam), tam_str, Style.RESET_ALL), end="")
+    print(" |{} {:02d}/{:02d}/{} {}|{} {:02d}:{:02d}{}".format(Fore.LIGHTCYAN_EX, dt.day,
+          dt.month, dt.year, Style.RESET_ALL, Fore.LIGHTRED_EX, dt.hour, dt.second, Style.RESET_ALL), end="")
+    print(f" |{Style.BRIGHT}{Fore.LIGHTYELLOW_EX} {perm}{Style.RESET_ALL}", end="")
     print(" |")
 
 
@@ -66,7 +79,8 @@ lista_param = ['d', 'X', 'r', 't', 'd', 'l', 'b']
 
 
 while (True):
-    inp = input(f"{usuario}☢{pc}: {diretorio_atual} ~~► ").strip()
+    inp = input(
+        f"{Style.BRIGHT}{Fore.MAGENTA}{usuario}☢{Fore.YELLOW}{pc}{Style.RESET_ALL}:{Fore.LIGHTMAGENTA_EX} {diretorio_atual}  {Style.RESET_ALL}~~► ").strip()
     inp = inp.split(" -")
     comando = inp.pop(0)
     # pra tratar tanto ls -ld e ls -l -d, concateno todos os meus parametros em uma string e depois so pecorro..
@@ -77,7 +91,8 @@ while (True):
     if ("ls" == comando or ('ls' in comando and comando[3] == '.') and param in lista_param):
         # pegar o tamanho maximo so dos nomes nas tuplas
         reverse = False
-        tam = max(len(item[0]) for item in lista_dir)
+        # pego o tamanho maximo das strings dos arquivos, e aplico em strings e valores que não tem uma largura fixa.
+        tam = max(len(str(item)) for tupla in lista_dir for item in tupla)
 
         if (param):  # se tem itens na minha lista de parametros..
             for parametro in param:  # acho que é mais jogo fazer um for pra percorrer do que verificar se está in param, já que se eu fizesse isso eu meio que faria um for pra cada vez que eu fosse verificar 1 parametro especifico, e aqui eu uso o for somente uma vez mas de forma que eu consigo pegar cada parametro q eu quero.
@@ -105,7 +120,7 @@ while (True):
                     ls(tupla, tam, param)
 
         else:
-            print("[Diretório vazio!]")
+            print(f"{Fore.RED}[Diretório vazio!]{Style.RESET_ALL}")
         print("")
 
         if ('l' in param):
@@ -113,6 +128,6 @@ while (True):
             total = 0
             for raiz, dirs, arqs in os.walk('.'):
                 total += len(arqs) + len(dirs)
-            print(f"total {total}")
+            print(f"{Fore.LIGHTYELLOW_EX}total {total}{Style.RESET_ALL}")
     else:
-        print("[Comando inválido!]")
+        print(f"{Fore.RED}[Comando inválido!]{Style.RESET_ALL}")
