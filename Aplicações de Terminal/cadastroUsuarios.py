@@ -21,14 +21,12 @@ def verificarDuplicado(campo, login):
     try:
         with open("dados.json", 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
-            print("oi")
             for dicionario in dados:
                 if dicionario[f'{campo}'].upper() == login.upper():
-                    print(f"Esse {campo} já está registrado!")
-                    return False
-            return True
+                    return True  # é duplicado
+            return False  # não é duplicado
     except:
-        return False
+        return False  # não tem arquivos, então não é duplicado
 
 
 def verificarDados():
@@ -112,21 +110,33 @@ while (op != 3):
                 nome = input("Digite seu nome completo: ")
 
             email = input("Digite seu email: ")
-            if not (verificarDuplicado('email', email)):
-                while (validarEmail(email) == None):
-                    print("INVÁLIDO: Digite um e-mail válido!")
-                    email = input("Digite seu email: ")
+            emailDup = verificarDuplicado('email', email)  # email é duplicado?
+            emailVal = (validarEmail(email) == None)  # email é válido?
+
+            while (emailVal or emailDup):
+                print("INVÁLIDO: Digite um email válido") if emailVal else print(
+                    "INVÁLIDO: O email já existe")
+                email = input("Digite seu email: ")
+                emailDup = verificarDuplicado(
+                    'email', email)  # email é duplicado?
+                emailVal = (validarEmail(email) == None)  # email é válido?
 
             login = input("Digite seu login: ")
-            if not (verificarDuplicado('login', login)):
-                while (validarLogin(login) == None):
-                    print("INVÁLIDO: Digite um login válido")
-                    login = input("Digite seu login: ")
+            loginDup = verificarDuplicado('login', login)  # login é duplicado?
+            loginVal = (validarLogin(login) == None)  # login é valido?
 
-                hash_senha = hashlib.sha512(
-                    str(input("Digite sua senha: ")).encode("UTF-8")).hexdigest()
-                gravarDados(id=id_cont+1, nome=nome.upper(),
-                            email=email.casefold(), login=login.upper(), senha=hash_senha, lista_dados=lista_dados)
+            while loginDup or loginVal:
+                print("INVÁLIDO: Digite um login válido") if loginVal else print(
+                    "INVÁLIDO: O login já existe")
+                login = input("Digite seu login: ")
+                loginDup = verificarDuplicado(
+                    'login', login)  # login é duplicado?
+                loginVal = (validarLogin(login) == None)  # login é valido?
+
+            hash_senha = hashlib.sha512(
+                str(input("Digite sua senha: ")).encode("UTF-8")).hexdigest()
+            gravarDados(id=id_cont+1, nome=nome.upper(),
+                        email=email.casefold(), login=login.upper(), senha=hash_senha, lista_dados=lista_dados)
 
         elif (op == 2):
             login = input("Digite seu login ou e-mail: ")

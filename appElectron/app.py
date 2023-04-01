@@ -31,7 +31,6 @@ def verificarDuplicado(campo, login):
     try:
         with open("dados.json", 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
-            print("oi")
             for dicionario in dados:
                 if dicionario[f'{campo}'].upper() == login.upper():
                     print("{} {}".format(dicionario[f'{campo}'], login))
@@ -39,7 +38,7 @@ def verificarDuplicado(campo, login):
                     return True  # é duplicado
             return False
     except:
-        return True
+        return False
 
 
 def verificarDados():
@@ -109,9 +108,10 @@ id_cont, lista_dados, temDados = verificarDados()
 def index():
     return render_template('index.html')
 
+
 @app.route("/erro",)
 def erro():
-        return render_template('erro.html')
+    return render_template('erro.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
